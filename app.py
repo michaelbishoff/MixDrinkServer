@@ -4,6 +4,7 @@
 from flask import Flask, render_template, request, url_for
 import RPi.GPIO as GPIO
 import time
+import serial
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -32,7 +33,22 @@ def handle_post():
     print "Drink:", drink
     print "Strong:", strong
     
+    print "Begin Set-up"
 
+    ser = serial.Serial('/dev/tty.usbmodem1421', 9600) #/dev/ttyAMA0
+
+    print "Writing Drink Number"
+
+    ser.write(drinkNumber)
+    time.sleep(.25)
+
+    print "Writing Strong Number"
+
+    ser.write(strong)
+    time.sleep(.25)
+
+
+'''
     GPIO.setmode(GPIO.BOARD)
 
     GPIO.setup(lcky, GPIO.OUT, pull_up_down = GPIO.PUD_UP) # lucky seven
@@ -83,7 +99,10 @@ def handle_post():
 
 
     GPIO.cleanup()
-
+'''
+	
+    print "Done"
+    
     return 'OK\n' #render_template('form_action.html', name=name, email=email)
 
 
